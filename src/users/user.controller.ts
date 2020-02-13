@@ -8,11 +8,6 @@ export class UsersController {
   // eslint-disable-next-line no-useless-constructor
   constructor (public userService: UsersService) { }
 
-  @Options()
-  @Header('Access-Control-Allow-Origin', '*')
-  @Header('Access-Control-Allow-Headers', '*')
-  @Header('Access-Control-Allow-Method', '*')
-
   @Get(":id")
   getUser (@Param() params) {
     const id = params.id;
@@ -20,14 +15,15 @@ export class UsersController {
   }
 
   @Get()
-  async getUsers (@Res() request: Response) {
+  @Header('Access-Control-Allow-Origin', '*')
+  async getUsers () {
     const users = await this.userService.getFullTable();
-    console.log(users)
-    return request.status(HttpStatus.OK).json(users)
+    return users
   }
 
 
   @Post("register")
+  @Header('Access-Control-Allow-Origin', '*')
   addUser (@Body() user) {
     return this.userService.addRow(user);
   }
