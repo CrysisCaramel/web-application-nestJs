@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable } from "typeorm";
+import { Product } from "./product.entity";
 
 @Entity()
 export class User {
@@ -12,12 +13,12 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
-  numberOfLatestLikes: number;
-
-  @Column({ nullable: true })
   phoneNumber: number;
 
   @Column({ nullable: true })
   birthDate: string;
+
+  @OneToMany(type => Product, product => product.user)
+  products: Product[];
   
 }
