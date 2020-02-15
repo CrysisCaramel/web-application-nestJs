@@ -9,8 +9,8 @@ export class Service {
     return this.entities.findOne(this.entity, id);
   }
 
-  addRow (rowData) {
-    this.entities.save(this.entity, rowData)
+  async addRow (rowData) {
+    await this.entities.save(this.entity, rowData)
       .catch(err => console.log(err));
   }
 

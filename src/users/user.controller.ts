@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Put, Param, UseGuards, Request, Options, H
 import { UsersService } from "./user.service";
 import { AuthGuard } from "@nestjs/passport";
 import { Response } from 'express';
+import { AuthService } from "src/auth/auth.service";
 
 @Controller("users")
 export class UsersController {
@@ -21,11 +22,12 @@ export class UsersController {
     return users
   }
 
-
   @Post("register")
   @Header('Access-Control-Allow-Origin', '*')
-  addUser (@Body() user) {
-    return this.userService.addRow(user);
+  async addUser (@Body() user) {
+    const regUser = await this.userService.findRegUser(user)
+    return regUser
   }
+
 
 }

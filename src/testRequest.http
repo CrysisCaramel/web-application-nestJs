@@ -2,13 +2,9 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "dany",
-    "password": "1234"
+    "username": "redis",
+    "password": "34a"
 }
-
-###
-
-GET http://localhost:3000/users
 
 ###
 
@@ -16,19 +12,14 @@ POST http://localhost:3000/users/register
 Content-Type: application/json
 
 {
-    "name": "dany",
-    "password": "1234a",
-    "email": "dany@mail.ru"
+    "name": "danys",
+    "password": "1234a"
 }
-###
-POST http://localhost:3000/users/notes/add
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbnlzIiwic3ViIjo1LCJpYXQiOjE1ODA3NDI4OTQsImV4cCI6MTU4MDk1ODg5NH0.taVDAaJ0XenCMFdc9lzlLHKSsfEeZLTxLlTMPdhckZg
 
-{
-    "text": "101",
-    "title": "101"
-}
+###
+GET http://localhost:3000/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlZGlzIiwic3ViIjo1MiwiaWF0IjoxNTgxNjg2MzI0LCJleHAiOjE1ODE5MDIzMjR9.zK4lzhjmdHvSqK6VzyqHqCu5UA6PTn7SIxPEZPUWg8o
 
 
 ###
