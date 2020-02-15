@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Post, Request } from '@nestjs/common';
+import { Controller, Get, UseGuards, Post, Request, Header, Options } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
@@ -7,14 +7,17 @@ import { AuthService } from './auth/auth.service';
 export class AppController {
   constructor(private readonly appService: AppService, private readonly authService: AuthService) {}
   
+  
   @UseGuards(AuthGuard("local"))
   @Post("auth/login")
+  @Header('Access-Control-Allow-Origin', '*')
   async login (@Request() req) {
     return this.authService.login(req.user);
   }
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @UseGuards(AuthGuard('jwt'))
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }

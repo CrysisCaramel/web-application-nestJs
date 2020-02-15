@@ -2,8 +2,8 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "danys",
-    "password": "12345"
+    "username": "dany",
+    "password": "1234"
 }
 
 ###
@@ -16,8 +16,8 @@ POST http://localhost:3000/users/register
 Content-Type: application/json
 
 {
-    "name": "danys",
-    "password": "12345",
+    "name": "dany",
+    "password": "1234a",
     "email": "dany@mail.ru"
 }
 ###
