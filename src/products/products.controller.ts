@@ -36,7 +36,7 @@ export class ProductsController {
           })
     }))
     async uploadFile(@UploadedFile() file, @Request() req) {
-      console.log(this.minioClient.client.listBuckets()) 
+      console.log( await this.minioClient.client.listBuckets()) 
     } 
     // async addProduct (@UploadedFile() avatar, @Request() req) {
     //     console.log(avatar);
