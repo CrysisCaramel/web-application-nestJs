@@ -30,6 +30,7 @@
     "@nestjs/platform-express": "^6.11.1",
     "@nestjs/typeorm": "^6.2.0",
     "mongoose": "^5.8.10",
+    "nestjs-minio-client": "0.0.5",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^7.17.1",

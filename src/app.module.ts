@@ -7,7 +7,8 @@ import { UsersController } from './users/user.controller';
 import { UsersService } from './users/user.service';
 import { ProductsController } from './products/products.controller';
 import { ProductsService } from './products/products.service';
-
+import { MulterModule } from "@nestjs/platform-express";
+import { MinioModule } from 'nestjs-minio-client';
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: "postgres",
@@ -19,7 +20,17 @@ import { ProductsService } from './products/products.service';
     entities: [__dirname + "/**/*.entity{.ts,.js}"],
     synchronize: true
   }),
-  AuthModule
+  MinioModule.register({
+    endPoint: "127.0.0.1",
+    port: 9000,
+    useSSL: false,
+    accessKey: "minio",
+    secretKey: "minio124"
+  }),
+  MulterModule.register({
+    dest: './uploads',
+  }),
+  AuthModule,
 ],
   controllers: [AppController, UsersController, ProductsController],
   providers: [AppService, UsersService, ProductsService],

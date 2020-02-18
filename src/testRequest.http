@@ -1,8 +1,9 @@
+
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "redis",
+    "username": "dima",
     "password": "34a"
 }
 
@@ -17,43 +18,13 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/profile
+POST http://localhost:3000/products/add
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlZGlzIiwic3ViIjo1MiwiaWF0IjoxNTgxNjg2MzI0LCJleHAiOjE1ODE5MDIzMjR9.zK4lzhjmdHvSqK6VzyqHqCu5UA6PTn7SIxPEZPUWg8o
-
-
-###
-
-PUT http://localhost:3000/notes/24/tags/add
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbnlzIiwic3ViIjo1LCJpYXQiOjE1ODA3NDI4OTQsImV4cCI6MTU4MDk1ODg5NH0.taVDAaJ0XenCMFdc9lzlLHKSsfEeZLTxLlTMPdhckZg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpbWEiLCJzdWIiOjU0LCJpYXQiOjE1ODE3OTcwNjksImV4cCI6MTU4MjAxMzA2OX0.YcyOg6zr9WS1mrCkwIm0NDWaHnr-617b27sTFzPWXiI
 
 {
-    "name": "dans"
+    "name": "danyasdsdsa",
+    "avatar": "1234a",
+    "description": "asdsadsad",
+    "number": 1
 }
-
-###
-
-POST http://localhost:3000/notes/22/likes/add
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbnlzIiwic3ViIjo1LCJpYXQiOjE1ODA3NDI4OTQsImV4cCI6MTU4MDk1ODg5NH0.taVDAaJ0XenCMFdc9lzlLHKSsfEeZLTxLlTMPdhckZg
-
-{
-    "tab": "1"
-}
-
-###
-
-GET http://localhost:3000/users/recentEntries
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbnlzIiwic3ViIjo1LCJpYXQiOjE1ODA3NDI4OTQsImV4cCI6MTU4MDk1ODg5NH0.taVDAaJ0XenCMFdc9lzlLHKSsfEeZLTxLlTMPdhckZg
-
-###
-
-GET http://localhost:3000/users/uniqueTags
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbnlzIiwic3ViIjo1LCJpYXQiOjE1ODA3NDI4OTQsImV4cCI6MTU4MDk1ODg5NH0.taVDAaJ0XenCMFdc9lzlLHKSsfEeZLTxLlTMPdhckZg
-
-
-###
-
-GET http://localhost:3000/users/rating-by-latest-likes
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbnkiLCJzdWIiOjEsImlhdCI6MTU4MDc1MjUyNywiZXhwIjoxNTgwOTY4NTI3fQ.W-xMueCJZXVt-z8BCGiYL23YtDK1AeYyQ_eyrJeAVSo

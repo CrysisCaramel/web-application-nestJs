@@ -1,6 +1,18 @@
 version: '3.5'
 
 services:
+  minio:
+    restart: always
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio124
+    command: server /export
+    volumes:
+      - /mnt/hdd/minio/data:/export
+      - /mnt/hdd/minio/config:/root/.minio
   postgres:
     container_name: postgres_container
     image: postgres
