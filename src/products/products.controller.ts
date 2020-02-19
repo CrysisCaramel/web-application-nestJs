@@ -1,4 +1,5 @@
-import { Controller, Header, Get, Param, Post, Body, UseGuards, Request, UseInterceptors, UploadedFile, UploadedFiles, Inject } from "@nestjs/common";
+import { User } from 'src/entities/user.entity';
+import { Controller, Header, Get, Param, Post, Body, UseGuards, Request, UseInterceptors, UploadedFile, UploadedFiles, Inject, Query, Response } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ProductsService } from "./products.service";
 import { FileInterceptor, FilesInterceptor, AnyFilesInterceptor } from "@nestjs/platform-express";
@@ -12,10 +13,22 @@ export class ProductsController {
 
     @Get()
     @Header("Access-Control-Allow-Origin", "*")
-  async getProducts () {
-    const products = await this.productService.getFullTable();
-    return products;
-  }
+    async getProducts () {
+      const products = await this.productService.getFullTable();
+      return products;
+    }
+
+    @Get("download")
+    @Header("Access-Control-Allow-Origin", "*")
+    async downloadImg(@Query('file') file, @Response() res) {
+      return this.minioClient.client.getObject('mybucket', file , function(err, dataStream) {
+          if(err) {
+              return res.status(500).send(err);
+          }
+          dataStream.pipe(res);
+      })
+    }
+  
 
     @Get(":id")
     getUser (@Param() params) {
@@ -28,30 +41,27 @@ export class ProductsController {
     @Header("Access-Control-Allow-Origin", "*")
     @UseInterceptors(FileInterceptor("avatar", {
       storage: diskStorage({
-        destination: "./uploads",
         filename: (req, file, cb) => {
           const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join("");
           cb(null, `${randomName}${extname(file.originalname)}`);
         }
       })
     }))
-    async uploadFile (@UploadedFile() file, @Request() req) {
-      console.log(await this.minioClient.client.listBuckets());
-      const f = file.path;
-      var metaData = {
-        "Content-Type": "text/html",
-        "Content-Language": 123,
-        "X-Amz-Meta-Testing": 1234,
-        example: 5678
+    async uploadFiles (@UploadedFile() file, @Request() req) {
+      const user = req.user
+      const imgName = file.filename
+      const product = {
+        name: req.body.title,
+        description: req.body.description,
+        avatar: imgName,
+        number:  Number.parseInt(req.body.count)
+      }
+      this.productService.addProduct(product, user)
+      const metaData = {
+        'Content-Type': 'image',
       };
-      this.minioClient.client.fPutObject("mybucket", "40mbfile", f, metaData, function (err, etag) {
-        return console.log(err, etag); // err should be null
+      this.minioClient.client.fPutObject("mybucket", "sas.jpeg", file.path, metaData, function (err, etag) {
+        return console.log(err, etag);
       });
     }
-
-  // async addProduct (@UploadedFile() avatar, @Request() req) {
-  //     console.log(avatar);
-  //     // const user = req.user
-  //     // this.productService.addProduct(product, user)
-  // }
 }

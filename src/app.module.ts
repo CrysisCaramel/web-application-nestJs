@@ -7,7 +7,6 @@ import { UsersController } from './users/user.controller';
 import { UsersService } from './users/user.service';
 import { ProductsController } from './products/products.controller';
 import { ProductsService } from './products/products.service';
-import { MulterModule } from "@nestjs/platform-express";
 import { MinioModule } from 'nestjs-minio-client';
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -26,9 +25,6 @@ import { MinioModule } from 'nestjs-minio-client';
     useSSL: false,
     accessKey: "minio",
     secretKey: "minio124"
-  }),
-  MulterModule.register({
-    dest: './uploads',
   }),
   AuthModule,
 ],
