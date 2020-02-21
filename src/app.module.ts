@@ -8,6 +8,8 @@ import { UsersService } from './users/user.service';
 import { ProductsController } from './products/products.controller';
 import { ProductsService } from './products/products.service';
 import { MinioModule } from 'nestjs-minio-client';
+import { CartController } from './cart/cart.controller';
+import { CartService } from './cart/cart.service';
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: "postgres",
@@ -28,7 +30,7 @@ import { MinioModule } from 'nestjs-minio-client';
   }),
   AuthModule,
 ],
-  controllers: [AppController, UsersController, ProductsController],
-  providers: [AppService, UsersService, ProductsService],
+  controllers: [AppController, UsersController, ProductsController, CartController],
+  providers: [AppService, UsersService, ProductsService, CartService],
 })
 export class AppModule {}

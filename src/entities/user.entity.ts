@@ -1,5 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable, OneToOne, JoinColumn } from "typeorm";
 import { Product } from "./product.entity";
+import { Cart } from "./cart.entity";
+
 
 @Entity()
 export class User {
@@ -20,5 +22,9 @@ export class User {
 
   @OneToMany(type => Product, product => product.user)
   products: Product[];
-  
+
+  @OneToOne(type => Cart)
+  @JoinColumn()
+  cart: Cart;
+
 }
