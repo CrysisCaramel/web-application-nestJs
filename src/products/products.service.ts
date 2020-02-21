@@ -14,7 +14,7 @@ export class ProductsService extends Service{
     async addProduct(product, user) {
         await this.addRow(product)
         const userRep = await getRepository(User)
-        const us = await userRep.findOne(user.id, { relations: ["products"]})
+        const us = await userRep.findOne(user.userId, { relations: ["products"]})
         const prod = await this.entities.findOne(Product, {name: product.name})
         us.products.push(prod)
         await this.entities.save(us)

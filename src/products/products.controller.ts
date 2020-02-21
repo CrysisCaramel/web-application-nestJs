@@ -12,14 +12,12 @@ export class ProductsController {
   constructor (public productService: ProductsService, private readonly minioClient: MinioService) { }
 
     @Get()
-    @Header("Access-Control-Allow-Origin", "*")
     async getProducts () {
       const products = await this.productService.getFullTable();
       return products;
     }
 
     @Get("download")
-    @Header("Access-Control-Allow-Origin", "*")
     async downloadImg(@Query('file') file, @Response() res) {
       return this.minioClient.client.getObject('mybucket', file , function(err, dataStream) {
           if(err) {
@@ -38,7 +36,6 @@ export class ProductsController {
 
     @UseGuards(AuthGuard("jwt"))
     @Post("add")
-    @Header("Access-Control-Allow-Origin", "*")
     @UseInterceptors(FileInterceptor("avatar", {
       storage: diskStorage({
         filename: (req, file, cb) => {
@@ -47,7 +44,7 @@ export class ProductsController {
         }
       })
     }))
-    async uploadFiles (@UploadedFile() file, @Request() req) {
+    async createProduct(@UploadedFile() file, @Request() req) {
       const user = req.user
       const imgName = file.filename
       const product = {
@@ -60,7 +57,7 @@ export class ProductsController {
       const metaData = {
         'Content-Type': 'image',
       };
-      this.minioClient.client.fPutObject("mybucket", "sas.jpeg", file.path, metaData, function (err, etag) {
+      this.minioClient.client.fPutObject("mybucket", imgName, file.path, metaData, function (err, etag) {
         return console.log(err, etag);
       });
     }

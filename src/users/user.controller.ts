@@ -16,14 +16,12 @@ export class UsersController {
   }
 
   @Get()
-  @Header('Access-Control-Allow-Origin', '*')
   async getUsers () {
     const users = await this.userService.getFullTable();
     return users
   }
 
   @Post("register")
-  @Header('Access-Control-Allow-Origin', '*')
   async addUser (@Body() user) {
     const regUser = await this.userService.findRegUser(user)
     return regUser
