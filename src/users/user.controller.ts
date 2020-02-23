@@ -1,8 +1,6 @@
 import { Controller, Get, Post, Body, Put, Param, UseGuards, Request, Options, Header, Res, HttpStatus } from "@nestjs/common";
 import { UsersService } from "./user.service";
-import { AuthGuard } from "@nestjs/passport";
-import { Response } from 'express';
-import { AuthService } from "src/auth/auth.service";
+const bcrypt = require("bcrypt");
 
 @Controller("users")
 export class UsersController {
@@ -18,14 +16,18 @@ export class UsersController {
   @Get()
   async getUsers () {
     const users = await this.userService.getFullTable();
-    return users
+    return users;
   }
 
   @Post("register")
-  async addUser (@Body() user) {
-    const regUser = await this.userService.findRegUser(user)
-    return regUser
+  async addUser (@Body() body) {
+    const saltRounds = 10;
+    const hashPass = await bcrypt.hash(body.password, saltRounds);
+    const user = {
+      ...body,
+      password: hashPass
+    };
+    const regUser = await this.userService.findRegUser(user);
+    return regUser;
   }
-
-
 }

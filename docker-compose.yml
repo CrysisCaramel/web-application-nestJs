@@ -43,6 +43,14 @@ services:
       - postgres
     restart: unless-stopped
 
+  redis:
+    image: redis
+    restart: always
+    volumes:
+      - redis:/data
+    ports:
+      - 6379:6379
+
 networks:
   postgres:
     driver: bridge
@@ -50,3 +58,4 @@ networks:
 volumes:
     postgres:
     pgadmin:
+    redis:

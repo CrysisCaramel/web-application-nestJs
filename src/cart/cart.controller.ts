@@ -13,14 +13,6 @@ export class CartController {
     return carts;
   }
 
-  @UseGuards(AuthGuard("jwt"))
-  @Get("users")
-  async getUsersCart (@Request() req) {
-    const user = req.user;
-    const cart = await this.cartService.getUsersCart(user);
-    return cart;
-  }
-
   @Get(":id")
   getCart (@Param() params) {
     const id = params.id;

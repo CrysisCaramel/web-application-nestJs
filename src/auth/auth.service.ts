@@ -6,6 +6,7 @@ import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthService {
+  // eslint-disable-next-line no-useless-constructor
   constructor (
     @InjectRepository(User) private UsersRep: Repository<User>,
     private jwtService: JwtService
@@ -13,7 +14,9 @@ export class AuthService {
 
   async validateUser (username: string, pass: string): Promise<any> {
     const user = await this.UsersRep.findOne({ name: username });
-    if (user && user.password === pass) {
+    const bcrypt = require("bcrypt");
+    const comparePass = await bcrypt.compare(pass, user.password);
+    if (user && comparePass) {
       const { password, ...result } = user;
       return result;
     }

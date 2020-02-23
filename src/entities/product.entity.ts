@@ -25,6 +25,4 @@ export class Product {
   @ManyToMany(type => Cart, cart => cart.products)
   @JoinTable()
   cart: Cart[];
-
-  
 }

@@ -8,5 +8,4 @@ export class Cart {
 
   @ManyToMany(type => Product, product => product.cart)
   products: Product[];
-  
 }

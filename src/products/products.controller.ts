@@ -2,19 +2,35 @@ import { User } from "src/entities/user.entity";
 import { Controller, Header, Get, Param, Post, Body, UseGuards, Request, UseInterceptors, UploadedFile, UploadedFiles, Inject, Query, Response } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ProductsService } from "./products.service";
-import { FileInterceptor, FilesInterceptor, AnyFilesInterceptor } from "@nestjs/platform-express";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { MinioService } from "nestjs-minio-client";
 import { extname } from "path";
 import { diskStorage } from "multer";
+import { ClientProxy, MessagePattern, Payload, Ctx, RedisContext } from "@nestjs/microservices";
 
 @Controller("products")
 export class ProductsController {
-  constructor (public productService: ProductsService, private readonly minioClient: MinioService) { }
+  // eslint-disable-next-line no-useless-constructor
+  constructor (
+    public productService: ProductsService,
+    private readonly minioClient: MinioService,
+    @Inject("MATH_SERVICE") private readonly client: ClientProxy
+  ) { }
 
   @Get()
   async getProducts () {
     const products = await this.productService.getFullTable();
+    const pattern = "notifications";
+    const payload = [1, 2, 3];
+    this.client.send(pattern, payload);
+    console.log(this.client);
     return products;
+  }
+
+  @MessagePattern("notifications")
+  getNotifications (@Payload() data: number[], @Ctx() context: RedisContext) {
+    console.log(context, data);
+    console.log(`Channel: ${context.getChannel()}`);
   }
 
   @Get("download")
