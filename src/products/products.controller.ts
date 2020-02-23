@@ -19,11 +19,7 @@ export class ProductsController {
 
   @Get()
   async getProducts () {
-    const products = await this.productService.getFullTable();
-    const pattern = "notifications";
-    const payload = [1, 2, 3];
-    this.client.send(pattern, payload);
-    console.log(this.client);
+    const products = await this.productService.getAllProducts();
     return products;
   }
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, UseGuards, Request, Options, Header, Res, HttpStatus } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param } from "@nestjs/common";
 import { UsersService } from "./user.service";
 const bcrypt = require("bcrypt");
 
@@ -27,7 +27,7 @@ export class UsersController {
       ...body,
       password: hashPass
     };
-    const regUser = await this.userService.findRegUser(user);
+    const regUser = await this.userService.addUser(user);
     return regUser;
   }
 }

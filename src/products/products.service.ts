@@ -13,6 +13,19 @@ export class ProductsService extends Service {
     super(Product, entities);
   }
 
+  async getAllProducts () {
+    const products = await this.entities.find(this.entity, { relations: ["user"] });
+    return products.map(({ id, name, avatar, description, user }) => {
+      return {
+        id,
+        name,
+        avatar,
+        description,
+        userId: user.id
+      };
+    });
+  }
+
   async addProduct (product, user) {
     await this.addRow(product);
     const userRep = await getRepository(User);
