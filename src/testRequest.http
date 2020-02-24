@@ -31,5 +31,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpb
 
 ###
 
-GET http://localhost:3000/products/from-users-cart
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbnkiLCJzdWIiOjYxLCJpYXQiOjE1ODIzMjg2NTIsImV4cCI6MTU4MjU0NDY1Mn0.ZvaUUI0jH124_e3I5UScWr9CBsBIMaP_9wJPDAjTpOA
+GET http://localhost:3000/products/number-products?id=2&dfg=3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbnkiLCJzdWIiOjY5LCJpYXQiOjE1ODI1ODMyMTksImV4cCI6MTU4Mjc5OTIxOX0.37g_oLRxBPxFiAzB9NaBLwbZGSbEUpEyaZWFsHUZYt0

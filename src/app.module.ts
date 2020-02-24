@@ -10,7 +10,6 @@ import { ProductsService } from "./products/products.service";
 import { MinioModule } from "nestjs-minio-client";
 import { CartController } from "./cart/cart.controller";
 import { CartService } from "./cart/cart.service";
-import { ClientsModule, Transport } from "@nestjs/microservices";
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: "postgres",
@@ -29,16 +28,7 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
     accessKey: "minio",
     secretKey: "minio124"
   }),
-  AuthModule,
-  ClientsModule.register([
-    {
-      name: "MATH_SERVICE",
-      transport: Transport.REDIS,
-      options: {
-        url: "redis://localhost:6379"
-      }
-    }
-  ])
+  AuthModule
   ],
   controllers: [AppController, UsersController, ProductsController, CartController],
   providers: [AppService, UsersService, ProductsService, CartService]

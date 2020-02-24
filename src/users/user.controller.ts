@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Controller, Get, Post, Body, Param } from "@nestjs/common";
 import { UsersService } from "./user.service";
 const bcrypt = require("bcrypt");
@@ -10,12 +11,12 @@ export class UsersController {
   @Get(":id")
   getUser (@Param() params) {
     const id = params.id;
-    return this.userService.getRow(id);
+    return this.userService.getUser(id);
   }
 
   @Get()
   async getUsers () {
-    const users = await this.userService.getFullTable();
+    const users = await this.userService.getAllUsers();
     return users;
   }
 

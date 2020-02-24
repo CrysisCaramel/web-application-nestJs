@@ -1,32 +1,24 @@
-import { User } from "src/entities/user.entity";
-import { Controller, Header, Get, Param, Post, Body, UseGuards, Request, UseInterceptors, UploadedFile, UploadedFiles, Inject, Query, Response } from "@nestjs/common";
+/* eslint-disable no-unused-vars */
+import { Controller, Get, Param, Post, Body, UseGuards, Request, UseInterceptors, UploadedFile, Query, Response } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ProductsService } from "./products.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { MinioService } from "nestjs-minio-client";
 import { extname } from "path";
 import { diskStorage } from "multer";
-import { ClientProxy, MessagePattern, Payload, Ctx, RedisContext } from "@nestjs/microservices";
 
 @Controller("products")
 export class ProductsController {
   // eslint-disable-next-line no-useless-constructor
   constructor (
     public productService: ProductsService,
-    private readonly minioClient: MinioService,
-    @Inject("MATH_SERVICE") private readonly client: ClientProxy
+    private readonly minioClient: MinioService
   ) { }
 
   @Get()
   async getProducts () {
     const products = await this.productService.getAllProducts();
     return products;
-  }
-
-  @MessagePattern("notifications")
-  getNotifications (@Payload() data: number[], @Ctx() context: RedisContext) {
-    console.log(context, data);
-    console.log(`Channel: ${context.getChannel()}`);
   }
 
   @Get("download")
@@ -47,6 +39,12 @@ export class ProductsController {
     return products;
   }
 
+  @UseGuards(AuthGuard("jwt"))
+  @Get("number-products")
+  async setNumberProducts (@Query() query) {
+    await this.productService.setNumberProducts(query);
+  }
+
   @Get(":id")
   getUser (@Param() params) {
     const id = params.id;
@@ -58,7 +56,9 @@ export class ProductsController {
   @UseInterceptors(FileInterceptor("avatar", {
     storage: diskStorage({
       filename: (req, file, cb) => {
-        const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join("");
+        const randomName = Array(32).fill(null).map(() => (
+          Math.round(Math.random() * 16)
+        ).toString(16)).join("");
         cb(null, `${randomName}${extname(file.originalname)}`);
       }
     })

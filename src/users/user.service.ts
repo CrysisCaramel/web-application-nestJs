@@ -1,4 +1,5 @@
-import { CartService } from './../cart/cart.service';
+/* eslint-disable no-unused-vars */
+import { CartService } from "./../cart/cart.service";
 import { Injectable } from "@nestjs/common";
 import { Service } from "../models";
 import { User } from "../entities/user.entity";
@@ -12,6 +13,21 @@ export class UsersService extends Service {
     private cartService: CartService
   ) {
     super(User, entities);
+  }
+
+  async getAllUsers () {
+    const allUsers = await this.entities.find(this.entity);
+    return allUsers.map(({ id, name, products, cart }) => {
+      return { id, name };
+    });
+  }
+
+  async getUser (userId) {
+    const { id, name } = await this.entities.findOne(this.entity, userId);
+    return {
+      id,
+      name
+    };
   }
 
   async addUser (user) {

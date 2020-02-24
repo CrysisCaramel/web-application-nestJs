@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { getRepository, EntityManager } from "typeorm";
 import { Product } from "./../entities/product.entity";
 import { Injectable } from "@nestjs/common";
@@ -9,8 +10,38 @@ import { Cart } from "src/entities/cart.entity";
 
 @Injectable()
 export class ProductsService extends Service {
+  client: any;
+  redis: any;
   constructor (entities: EntityManager, private cartService: CartService) {
     super(Product, entities);
+    this.redis = require("redis");
+    this.client = this.redis.createClient();
+  }
+
+  async redisGet (key) {
+    return new Promise(resolve => {
+      this.client.get(key, function (er, reply) {
+        resolve(reply);
+      });
+    });
+  }
+
+  async redisSet (key, value) {
+    return new Promise(resolve => {
+      resolve(this.client.set(key, value));
+    });
+  }
+
+  async redisIncr (key) {
+    return new Promise(resolve => {
+      resolve(this.client.incr(key));
+    });
+  }
+
+  async redisDecr (key) {
+    return new Promise(resolve => {
+      resolve(this.client.decr(key));
+    });
   }
 
   async getAllProducts () {
@@ -31,6 +62,7 @@ export class ProductsService extends Service {
     const userRep = await getRepository(User);
     const us = await userRep.findOne(user.userId, { relations: ["products"] });
     const prod = await this.entities.findOne(Product, { name: product.name });
+    await this.redisSet(prod.id, 1);
     us.products.push(prod);
     await this.entities.save(us);
   }
@@ -50,5 +82,10 @@ export class ProductsService extends Service {
     const us = await userRep.findOne(user.userId, { relations: ["cart"] });
     const cart = await cartRep.findOne(us.cart.id, { relations: ["products"] });
     return cart.products;
+  }
+
+  async setNumberProducts (query) {
+    const { id, method } = query;
+    method === "incr" ? await this.redisIncr(id) : await this.redisDecr(id);
   }
 }
