@@ -1,23 +1,23 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-constructor */
 import { Controller, Get, Post, Body, Param } from "@nestjs/common";
 import { UsersService } from "./user.service";
 const bcrypt = require("bcrypt");
 
 @Controller("users")
 export class UsersController {
-  // eslint-disable-next-line no-useless-constructor
   constructor (public userService: UsersService) { }
-
-  @Get(":id")
-  getUser (@Param() params) {
-    const id = params.id;
-    return this.userService.getUser(id);
-  }
 
   @Get()
   async getUsers () {
     const users = await this.userService.getAllUsers();
     return users;
+  }
+
+  @Get(":id")
+  getUser (@Param() params) {
+    const id = params.id;
+    return this.userService.getUser(id);
   }
 
   @Post("register")

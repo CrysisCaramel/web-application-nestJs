@@ -1,11 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from "typeorm";
-import { Product } from "./product.entity";
-
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Cart {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(type => Product, product => product.cart)
-  products: Product[];
+  @Column()
+  userId: number
+
+  @Column()
+  productId: number
+
+  @Column()
+  numberOfProduct: number
 }

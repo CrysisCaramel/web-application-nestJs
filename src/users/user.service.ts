@@ -9,35 +9,28 @@ import { AuthService } from "src/auth/auth.service";
 export class UsersService extends Service {
   constructor (
     entities: EntityManager,
-    private readonly authService: AuthService,
-    private cartService: CartService
+    private readonly authService: AuthService
   ) {
     super(User, entities);
   }
 
   async getAllUsers () {
-    const allUsers = await this.entities.find(this.entity);
-    return allUsers.map(({ id, name, products, cart }) => {
-      return { id, name };
-    });
+    const allUsers = await this.entities.find(this.entity, { select: ["id", "name"] });
+    return allUsers;
   }
 
   async getUser (userId) {
-    const { id, name } = await this.entities.findOne(this.entity, userId);
-    return {
-      id,
-      name
-    };
+    const user = await this.entities.findOne(this.entity, userId, { select: ["id", "name"] });
+    return user;
   }
 
   async addUser (user) {
     const usersRep = this.entities.getRepository(User);
     const allUsers = await this.entities.find(this.entity);
-    const validate = allUsers.find(us => us.name === user.name);
-    if (!validate) {
+    const checkUser = allUsers.find(us => us.name === user.name);
+    if (!checkUser) {
       await this.addRow(user);
       const regUser = await usersRep.findOne({ name: user.name });
-      this.cartService.addCart(regUser);
       return this.authService.login(regUser);
     }
     return { error: "the user is registered" };

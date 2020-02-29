@@ -18,12 +18,14 @@ export class Service {
   async updateRow (rowData, id) {
     const updatedRow = await this.entities.findOne(this.entity, id);
     for (const col in rowData) {
-      updatedRow[col] = rowData[col];
+      if (rowData[col]) {
+        updatedRow[col] = rowData[col];
+      }
     }
-    this.entities.save(updatedRow);
+    await this.entities.save(updatedRow);
   }
 
-  deleteRow (id) {
-    this.entities.delete(this.entity, id);
+  async deleteRow (id) {
+    await this.entities.delete(this.entity, id);
   }
 }

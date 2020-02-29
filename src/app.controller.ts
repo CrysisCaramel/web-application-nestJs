@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-constructor */
 import { Controller, Get, UseGuards, Post, Request, Header, Options } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { AuthGuard } from "@nestjs/passport";
@@ -6,7 +7,6 @@ import { AuthService } from "./auth/auth.service";
 
 @Controller()
 export class AppController {
-  // eslint-disable-next-line no-useless-constructor
   constructor (private readonly appService: AppService, private readonly authService: AuthService) {}
 
   @UseGuards(AuthGuard("local"))

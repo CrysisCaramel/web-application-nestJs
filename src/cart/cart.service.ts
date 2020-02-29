@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { User } from "src/entities/user.entity";
-import { EntityManager } from "typeorm";
+import { getRepository, EntityManager } from "typeorm";
 import { Injectable } from "@nestjs/common";
 
 import { Service } from "src/models";
@@ -11,24 +12,25 @@ export class CartService extends Service {
     super(Cart, entities);
   }
 
-  async addCart (user) {
-    const userRep = this.entities.getRepository(User);
-    const us = await userRep.findOne(user.userId, { relations: ["cart"] });
-    if (!us.cart) {
-      const newCart = new Cart();
-      await this.entities.save(newCart);
-      us.cart = newCart;
-      await this.entities.save(us);
-      return newCart;
-    }
-    return us.cart;
+  async getCarts (id) {
+    const cartsRep = this.entities.getRepository(Cart);
+    const carts = await cartsRep.find({ userId: id });
+    return carts;
   }
 
-  async getUsersCart (user) {
-    const userRep = this.entities.getRepository(User);
-    const cartRep = this.entities.getRepository(Cart);
-    const us = await userRep.findOne(user.userId, { relations: ["cart"] });
-    const cart = await cartRep.findOne(us.cart.id, { relations: ["products"] });
-    return cart;
+  async addCart (userId, productId, numberOfProduct) {
+    const rowData = {
+      userId,
+      productId,
+      numberOfProduct
+    };
+    await this.addRow(rowData);
+    const newCart = await this.entities.findOne(this.entity, { userId: userId, productId: productId });
+    return newCart;
+  }
+
+  async removeCart (id) {
+    const cart = this.entities.findOne(this.entity, id);
+    await this.deleteRow(id);
   }
 }

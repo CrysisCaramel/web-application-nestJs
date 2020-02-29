@@ -1,3 +1,4 @@
+import { RedisService } from "./redis/redis.service";
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -10,6 +11,7 @@ import { ProductsService } from "./products/products.service";
 import { MinioModule } from "nestjs-minio-client";
 import { CartController } from "./cart/cart.controller";
 import { CartService } from "./cart/cart.service";
+import { ImageController } from "./image/image.controller";
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: "postgres",
@@ -30,7 +32,7 @@ import { CartService } from "./cart/cart.service";
   }),
   AuthModule
   ],
-  controllers: [AppController, UsersController, ProductsController, CartController],
-  providers: [AppService, UsersService, ProductsService, CartService]
+  controllers: [AppController, UsersController, ProductsController, CartController, ImageController],
+  providers: [AppService, UsersService, ProductsService, CartService, RedisService]
 })
 export class AppModule {}

@@ -1,6 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Product } from "./product.entity";
-import { Cart } from "./cart.entity";
 
 @Entity()
 export class User {
@@ -13,16 +12,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
-  phoneNumber: number;
-
-  @Column({ nullable: true })
-  birthDate: string;
-
   @OneToMany(type => Product, product => product.user)
   products: Product[];
-
-  @OneToOne(type => Cart)
-  @JoinColumn()
-  cart: Cart;
 }
