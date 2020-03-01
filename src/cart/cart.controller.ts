@@ -18,13 +18,11 @@ export class CartController {
   }
 
   @UseGuards(AuthGuard("jwt"))
-  @Post()
-  async addCart (@Body() body, @Request() req) {
+  @Get("products")
+  async getProductsFromCart (@Request() req) {
     const userId = req.user.userId;
-    const productId = body.id;
-    const numberOfProduct = body.count;
-    const cart = await this.cartService.addCart(userId, productId, numberOfProduct);
-    return cart;
+    const products = await this.cartService.getProductsFromCart(userId);
+    return products;
   }
 
   @UseGuards(AuthGuard("jwt"))
@@ -35,9 +33,31 @@ export class CartController {
   }
 
   @UseGuards(AuthGuard("jwt"))
+  @Post()
+  async addCart (@Body() body, @Request() req) {
+    const userId = req.user.userId;
+    const productId = body.id;
+    const givenQuantity = body.count;
+    const cart = await this.cartService.addCart(userId, productId, givenQuantity);
+    const productFromCart = await this.cartService.getProductFromCart(cart);
+    return productFromCart;
+  }
+
+  @UseGuards(AuthGuard("jwt"))
   @Delete(":id")
   async removeCart (@Param() params) {
     const id = params.id;
-    await this.cartService.removeCart(id);
+    const removeCart = await this.cartService.removeCart(id);
+    const removeProduct = await this.cartService.getRemoveProductFromCart(removeCart);
+    return removeProduct;
+  }
+
+  @UseGuards(AuthGuard("jwt"))
+  @Put(":id")
+  async updateCart (@Param() params, @Body() body) {
+    const id = params.id;
+    const updateCart = await this.cartService.updateCart(id, body);
+    const updateProductInCart = await this.cartService.getProductFromCart(updateCart);
+    return updateProductInCart;
   }
 }

@@ -20,9 +20,10 @@ export class ProductsController {
   }
 
   @Get(":id")
-  getUser (@Param() params) {
+  async getProduct (@Param() params) {
     const id = params.id;
-    return this.productService.getRow(id);
+    const product = await this.productService.getRow(id);
+    return product;
   }
 
   @UseGuards(AuthGuard("jwt"))
